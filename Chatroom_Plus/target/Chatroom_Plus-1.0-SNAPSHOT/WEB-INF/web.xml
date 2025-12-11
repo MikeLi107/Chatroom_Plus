@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+         version="6.0">
+
+    <welcome-file-list>
+        <welcome-file>login</welcome-file>
+    </welcome-file-list>
+
+    <!-- 过滤器配置顺序 -->
+
+    <!-- 先配置编码过滤器 -->
+    <filter>
+        <filter-name>EncodingFilter</filter-name>
+        <filter-class>Filter.EncodingFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>EncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern> <!-- 拦截所有请求 -->
+    </filter-mapping>
+
+    <!--后配置权限过滤器 -->
+    <filter>
+        <filter-name>CheckFilter</filter-name>
+        <filter-class>Filter.CheckFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>CheckFilter</filter-name>
+        <url-pattern>/chat</url-pattern>   <!-- 拦截聊天页 -->
+        <url-pattern>/logout</url-pattern> <!-- 拦截登出 -->
+    </filter-mapping>
+
+    <listener>
+        <listener-class>Listener.ChatSessionListener</listener-class>
+    </listener>
+
+    <session-config>
+        <!-- Session 过期时间（分钟），这里设为 30 分钟 -->
+        <session-timeout>30</session-timeout>
+    </session-config>
+
+</web-app>
